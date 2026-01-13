@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://learnage.onrender.com';
+
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -22,6 +23,8 @@ export const studentAPI = {
   getHomework: (studentId) => api.get(`/student/homework/${studentId}`),
   submitHomework: (homeworkId, studentId) => 
     api.put(`/student/homework/${homeworkId}/submit`, null, { params: { student_id: studentId } }),
+  askAITutor: (question, studentId) =>
+    api.post('/ai/chat', { question, context: null }),
 };
 
 // Teacher API
@@ -32,7 +35,6 @@ export const teacherAPI = {
     api.post('/teacher/attendance', attendanceData, { params: { teacher_id: teacherId } }),
   assignHomework: (homeworkData, teacherId) => 
     api.post('/teacher/homework', homeworkData, { params: { teacher_id: teacherId } }),
-  // ADD THIS NEW LINE:
   addStudent: (studentData, teacherId) =>
     api.post('/teacher/add-student', studentData, { params: { teacher_id: teacherId } }),
 };
@@ -48,6 +50,7 @@ export const parentAPI = {
 export const aiAPI = {
   chat: (question, context = null) => api.post('/ai/chat', { question, context }),
 };
+
 // Messages API
 export const messagesAPI = {
   getClassMessages: (classId, limit = 50) => 
