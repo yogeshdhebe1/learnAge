@@ -7,8 +7,18 @@ from typing import List, Dict, Optional
 settings = get_settings()
 
 # Initialize Firebase Admin
-cred = credentials.Certificate(settings.firebase_credentials_path)
-firebase_admin.initialize_app(cred)
+import os
+import json
+
+# Try to load from environment variable first (for production)
+firebase_creds = os.getenv('FIREBASE_CREDENTIALS')
+if firebase_creds:
+    # Production: use environment variable
+    cred_dict = json.loads(firebase_creds)
+    cred = credentials.Certificate(cred_dict)
+else:
+    # Local development: use file
+    cred = credentials.Certificate(settings.firebase_credentials_path)
 
 # Firestore client
 db = firestore.client()
