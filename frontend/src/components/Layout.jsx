@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { auth } from '../services/firebase';
 import { authAPI } from '../services/api';
+import Sidebar from './Sidebar';
 import ProfileDropdown from './ProfileDropdown';
 
 const Layout = ({ children, role, links }) => {
@@ -28,21 +28,8 @@ const Layout = ({ children, role, links }) => {
 
   return (
     <div style={styles.container}>
-      {/* Sidebar */}
-      <div style={styles.sidebar}>
-        <div style={styles.sidebarHeader}>
-          <h2 style={styles.logo}>LearnAge</h2>
-          <p style={styles.roleLabel}>{role}</p>
-        </div>
-
-        <nav style={styles.nav}>
-          {links.map((link, index) => (
-            <Link key={index} to={link.path} style={styles.navLink}>
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-      </div>
+      {/* Use the new Sidebar component */}
+      <Sidebar role={role} links={links} />
 
       {/* Main Content with Header */}
       <div style={styles.mainWrapper}>
@@ -69,49 +56,10 @@ const styles = {
   container: {
     display: 'flex',
     minHeight: '100vh',
-    backgroundColor: '#ecf0f1',
-  },
-  sidebar: {
-    width: '250px',
-    backgroundColor: '#2c3e50',
-    color: 'white',
-    padding: '20px',
-    position: 'fixed',
-    height: '100vh',
-    overflowY: 'auto',
-  },
-  sidebarHeader: {
-    borderBottom: '1px solid #34495e',
-    paddingBottom: '20px',
-    marginBottom: '20px',
-  },
-  logo: {
-    margin: '0 0 10px 0',
-    fontSize: '24px',
-    fontWeight: 'bold',
-  },
-  roleLabel: {
-    margin: 0,
-    fontSize: '14px',
-    color: '#95a5a6',
-    textTransform: 'capitalize',
-  },
-  nav: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-  },
-  navLink: {
-    display: 'block',
-    padding: '12px 15px',
-    color: 'white',
-    textDecoration: 'none',
-    borderRadius: '5px',
-    backgroundColor: '#34495e',
-    transition: 'background 0.3s',
+    backgroundColor: '#f8f9fa',
   },
   mainWrapper: {
-    marginLeft: '250px',
+    marginLeft: '280px', // Match new sidebar width
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
@@ -144,6 +92,7 @@ const styles = {
   content: {
     padding: '30px',
     flex: 1,
+    backgroundColor: '#f8f9fa',
   },
 };
 

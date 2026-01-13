@@ -7,7 +7,7 @@ class GeminiService:
         """Get AI response from Gemini using REST API"""
         
         # Your API key
-        api_key = "AIzaSyBMoC0PDqkeW0gLt1PihFxZ9UcQ0_AwO2s"
+        api_key = "AIzaSyAWWYKMr_mGm3iCHBgB9CPjVmlj2rYXMjg"
         
         try:
             # Prepare prompt
