@@ -3,24 +3,26 @@ from firebase_admin import credentials, firestore, auth
 from app.config import get_settings
 from datetime import datetime
 from typing import List, Dict, Optional
-
-settings = get_settings()
-
-# Initialize Firebase Admin
 import os
 import json
 
-# Try to load from environment variable first (for production)
-firebase_creds = os.getenv('FIREBASE_CREDENTIALS')
-if firebase_creds:
-    # Production: use environment variable
-    cred_dict = json.loads(firebase_creds)
-    cred = credentials.Certificate(cred_dict)
-else:
-    # Local development: use file
-    cred = credentials.Certificate(settings.firebase_credentials_path)
+settings = get_settings()
 
-# Firestore client
+# Initialize Firebase Admin FIRST
+if not firebase_admin._apps:
+    # Try to load from environment variable first (for production)
+    firebase_creds = os.getenv('FIREBASE_CREDENTIALS')
+    if firebase_creds:
+        # Production: use environment variable
+        cred_dict = json.loads(firebase_creds)
+        cred = credentials.Certificate(cred_dict)
+    else:
+        # Local development: use file
+        cred = credentials.Certificate(settings.firebase_credentials_path)
+            
+    firebase_admin.initialize_app(cred)
+
+# NOW get Firestore client (after initialization)
 db = firestore.client()
 
 class FirebaseService:
